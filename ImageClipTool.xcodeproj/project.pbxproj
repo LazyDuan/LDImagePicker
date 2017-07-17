@@ -337,6 +337,7 @@
 				D560C5F51D2CEF7F00D334AF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

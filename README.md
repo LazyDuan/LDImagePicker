@@ -14,4 +14,4 @@
     self.imgeView.image = editedImage;
 	}
     
-    
+     如果喜欢，请帮忙点颗星星✨

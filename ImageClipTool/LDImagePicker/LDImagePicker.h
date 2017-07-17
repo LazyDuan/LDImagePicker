@@ -8,11 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-typedef enum ImagePickerType
+typedef NS_ENUM(NSInteger,ImagePickerType)
 {
     ImagePickerCamera = 0,
     ImagePickerPhoto = 1
-}ImagePickerType;
+};
 @class LDImagePicker;
 @protocol LDImagePickerDelegate <NSObject>
 
@@ -21,6 +21,8 @@ typedef enum ImagePickerType
 @end
 @interface LDImagePicker : NSObject
 + (instancetype) sharedInstance;
+//选择原图片
+- (void)showOriginalImagePickerWithType:(ImagePickerType)type InViewController:(UIViewController *)viewController;
 //scale 裁剪框的高宽比 0~1.5 默认为1
 - (void)showImagePickerWithType:(ImagePickerType)type InViewController:(UIViewController *)viewController Scale:(double)scale;
 //代理

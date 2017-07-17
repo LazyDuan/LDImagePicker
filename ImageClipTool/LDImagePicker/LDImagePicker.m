@@ -11,6 +11,7 @@
 #define ScreenWidth  CGRectGetWidth([UIScreen mainScreen].bounds)
 #define ScreenHeight CGRectGetHeight([UIScreen mainScreen].bounds)
 @interface LDImagePicker()<UINavigationControllerDelegate, UIImagePickerControllerDelegate,VPImageCropperDelegate>{
+    BOOL isScale;
     double _scale;
 }
 @property (nonatomic, strong) UIImagePickerController *imagePickerController;
@@ -18,8 +19,7 @@
 @end
 @implementation LDImagePicker
 #pragma  mark -- 单例 --
-+ (instancetype)sharedInstance
-{
++ (instancetype)sharedInstance{
     static dispatch_once_t ETToken;
     static LDImagePicker *sharedInstance = nil;
     dispatch_once(&ETToken, ^{
@@ -28,12 +28,23 @@
     });
     return sharedInstance;
 }
+- (void)showOriginalImagePickerWithType:(ImagePickerType)type InViewController:(UIViewController *)viewController{
+    if (type == ImagePickerCamera) {
+        self.imagePickerController.sourceType =  UIImagePickerControllerSourceTypeCamera;
+    }else{
+        self.imagePickerController.sourceType =  UIImagePickerControllerSourceTypePhotoLibrary;
+    }
+    isScale = NO;
+    self.imagePickerController.allowsEditing = YES;
+    [viewController presentViewController:_imagePickerController animated:YES completion:nil];
+}
 - (void)showImagePickerWithType:(ImagePickerType)type InViewController:(UIViewController *)viewController Scale:(double)scale{
     if (type == ImagePickerCamera) {
         self.imagePickerController.sourceType =  UIImagePickerControllerSourceTypeCamera;
     }else{
         self.imagePickerController.sourceType =  UIImagePickerControllerSourceTypePhotoLibrary;
     }
+    isScale = YES;
     if(scale>0 &&scale<=1.5){
       _scale = scale;
     }else{
@@ -42,14 +53,7 @@
     
     [viewController presentViewController:_imagePickerController animated:YES completion:nil];
 }
-- (UIImagePickerController *)imagePickerController{
-    if (!_imagePickerController) {
-        _imagePickerController = [[UIImagePickerController alloc] init];
-        _imagePickerController.delegate = self;
-        _imagePickerController.allowsEditing = NO;
-    }
-    return _imagePickerController;
-}
+#pragma mark - UIImagePickerControllerDelegate
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
     
     UIImage * image = [info objectForKey:UIImagePickerControllerOriginalImage];
@@ -64,9 +68,14 @@
         UIGraphicsEndImageContext();
         // 调整图片角度完毕
     }
-    self.imageCropperController = [[VPImageCropperViewController alloc] initWithImage:image cropFrame:CGRectMake(0, (ScreenHeight-ScreenWidth*_scale)/2, ScreenWidth, ScreenWidth*_scale) limitScaleRatio:5];
-    self.imageCropperController.delegate = self;
-    [picker pushViewController:self.imageCropperController animated:YES];
+    if (isScale) {
+        self.imageCropperController = [[VPImageCropperViewController alloc] initWithImage:image cropFrame:CGRectMake(0, (ScreenHeight-ScreenWidth*_scale)/2, ScreenWidth, ScreenWidth*_scale) limitScaleRatio:5];
+        self.imageCropperController.delegate = self;
+        [picker pushViewController:self.imageCropperController animated:YES];
+    }else{
+        [picker dismissViewControllerAnimated:YES completion:^{}];
+        [self.delegate imagePicker:self didFinished:image];
+    }
     
 }
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
@@ -76,6 +85,7 @@
         [self.delegate imagePickerDidCancel:self];
     }
 }
+#pragma mark - VPImageCropperDelegate
 - (void)imageCropperDidCancel:(VPImageCropperViewController *)cropperViewController{
     UIImagePickerController *picker = (UIImagePickerController *)cropperViewController.navigationController;
     if (picker.sourceType == UIImagePickerControllerSourceTypeCamera) {
@@ -90,5 +100,13 @@
         [self.delegate imagePicker:self didFinished:editedImage];
     }
 }
-
+#pragma mark - Getters
+- (UIImagePickerController *)imagePickerController{
+    if (!_imagePickerController) {
+        _imagePickerController = [[UIImagePickerController alloc] init];
+        _imagePickerController.delegate = self;
+        _imagePickerController.allowsEditing = NO;
+    }
+    return _imagePickerController;
+}
 @end
