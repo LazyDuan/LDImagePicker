@@ -44,6 +44,7 @@
     }else{
         self.imagePickerController.sourceType =  UIImagePickerControllerSourceTypePhotoLibrary;
     }
+    self.imagePickerController.allowsEditing = NO;
     isScale = YES;
     if(scale>0 &&scale<=1.5){
       _scale = scale;
