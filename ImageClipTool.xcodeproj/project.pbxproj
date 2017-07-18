@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1365C4F41F1DDA6A00C6B7D6 /* LDImagePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 1365C4F11F1DDA6A00C6B7D6 /* LDImagePicker.m */; };
+		1365C4F51F1DDA6A00C6B7D6 /* VPImageCropperViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1365C4F31F1DDA6A00C6B7D6 /* VPImageCropperViewController.m */; };
 		D560C5E11D2CEF7F00D334AF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D560C5E01D2CEF7F00D334AF /* main.m */; };
 		D560C5E41D2CEF7F00D334AF /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D560C5E31D2CEF7F00D334AF /* AppDelegate.m */; };
 		D560C5E71D2CEF7F00D334AF /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D560C5E61D2CEF7F00D334AF /* ViewController.m */; };
@@ -14,11 +16,13 @@
 		D560C5EC1D2CEF7F00D334AF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D560C5EB1D2CEF7F00D334AF /* Assets.xcassets */; };
 		D560C5EF1D2CEF7F00D334AF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D560C5ED1D2CEF7F00D334AF /* LaunchScreen.storyboard */; };
 		D560C5F91D2CEFE300D334AF /* LDActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = D560C5F81D2CEFE300D334AF /* LDActionSheet.m */; };
-		D560C5FD1D2CF3F400D334AF /* LDImagePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = D560C5FC1D2CF3F400D334AF /* LDImagePicker.m */; };
-		D560C6001D2CF60800D334AF /* VPImageCropperViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D560C5FF1D2CF60800D334AF /* VPImageCropperViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1365C4F01F1DDA6A00C6B7D6 /* LDImagePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LDImagePicker.h; sourceTree = "<group>"; };
+		1365C4F11F1DDA6A00C6B7D6 /* LDImagePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDImagePicker.m; sourceTree = "<group>"; };
+		1365C4F21F1DDA6A00C6B7D6 /* VPImageCropperViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPImageCropperViewController.h; sourceTree = "<group>"; };
+		1365C4F31F1DDA6A00C6B7D6 /* VPImageCropperViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPImageCropperViewController.m; sourceTree = "<group>"; };
 		D560C5DC1D2CEF7F00D334AF /* ImageClipTool.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageClipTool.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D560C5E01D2CEF7F00D334AF /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		D560C5E21D2CEF7F00D334AF /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -31,10 +35,6 @@
 		D560C5F01D2CEF7F00D334AF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D560C5F71D2CEFE300D334AF /* LDActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LDActionSheet.h; sourceTree = "<group>"; };
 		D560C5F81D2CEFE300D334AF /* LDActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDActionSheet.m; sourceTree = "<group>"; };
-		D560C5FB1D2CF3F400D334AF /* LDImagePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LDImagePicker.h; sourceTree = "<group>"; };
-		D560C5FC1D2CF3F400D334AF /* LDImagePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDImagePicker.m; sourceTree = "<group>"; };
-		D560C5FE1D2CF60800D334AF /* VPImageCropperViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPImageCropperViewController.h; sourceTree = "<group>"; };
-		D560C5FF1D2CF60800D334AF /* VPImageCropperViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPImageCropperViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -48,9 +48,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1365C4EF1F1DDA6A00C6B7D6 /* LDImagePicker */ = {
+			isa = PBXGroup;
+			children = (
+				1365C4F01F1DDA6A00C6B7D6 /* LDImagePicker.h */,
+				1365C4F11F1DDA6A00C6B7D6 /* LDImagePicker.m */,
+				1365C4F21F1DDA6A00C6B7D6 /* VPImageCropperViewController.h */,
+				1365C4F31F1DDA6A00C6B7D6 /* VPImageCropperViewController.m */,
+			);
+			path = LDImagePicker;
+			sourceTree = "<group>";
+		};
 		D560C5D31D2CEF7F00D334AF = {
 			isa = PBXGroup;
 			children = (
+				1365C4EF1F1DDA6A00C6B7D6 /* LDImagePicker */,
 				D560C5DE1D2CEF7F00D334AF /* ImageClipTool */,
 				D560C5DD1D2CEF7F00D334AF /* Products */,
 			);
@@ -67,7 +79,6 @@
 		D560C5DE1D2CEF7F00D334AF /* ImageClipTool */ = {
 			isa = PBXGroup;
 			children = (
-				D560C5FA1D2CF3DB00D334AF /* LDImagePicker */,
 				D560C5F61D2CEFE300D334AF /* LDActionSheet */,
 				D560C5E21D2CEF7F00D334AF /* AppDelegate.h */,
 				D560C5E31D2CEF7F00D334AF /* AppDelegate.m */,
@@ -97,17 +108,6 @@
 				D560C5F81D2CEFE300D334AF /* LDActionSheet.m */,
 			);
 			path = LDActionSheet;
-			sourceTree = "<group>";
-		};
-		D560C5FA1D2CF3DB00D334AF /* LDImagePicker */ = {
-			isa = PBXGroup;
-			children = (
-				D560C5FB1D2CF3F400D334AF /* LDImagePicker.h */,
-				D560C5FC1D2CF3F400D334AF /* LDImagePicker.m */,
-				D560C5FE1D2CF60800D334AF /* VPImageCropperViewController.h */,
-				D560C5FF1D2CF60800D334AF /* VPImageCropperViewController.m */,
-			);
-			path = LDImagePicker;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -183,9 +183,9 @@
 			files = (
 				D560C5E71D2CEF7F00D334AF /* ViewController.m in Sources */,
 				D560C5F91D2CEFE300D334AF /* LDActionSheet.m in Sources */,
-				D560C6001D2CF60800D334AF /* VPImageCropperViewController.m in Sources */,
+				1365C4F51F1DDA6A00C6B7D6 /* VPImageCropperViewController.m in Sources */,
 				D560C5E41D2CEF7F00D334AF /* AppDelegate.m in Sources */,
-				D560C5FD1D2CF3F400D334AF /* LDImagePicker.m in Sources */,
+				1365C4F41F1DDA6A00C6B7D6 /* LDImagePicker.m in Sources */,
 				D560C5E11D2CEF7F00D334AF /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
