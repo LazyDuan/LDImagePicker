@@ -8,19 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@class VPImageCropperViewController;
-
-@protocol VPImageCropperDelegate <NSObject>
-
-- (void)imageCropper:(VPImageCropperViewController *)cropperViewController didFinished:(UIImage *)editedImage;
-- (void)imageCropperDidCancel:(VPImageCropperViewController *)cropperViewController;
-
-@end
+typedef void(^submitBlock)(UIViewController *viewController , UIImage *image);
+typedef void(^cancelBlock)(UIViewController *viewController);
 
 @interface VPImageCropperViewController : UIViewController
-
-@property (nonatomic, assign) NSInteger tag;
-@property (nonatomic, assign) id<VPImageCropperDelegate> delegate;
+@property (nonatomic, copy) submitBlock submitblock;
+@property (nonatomic, copy) cancelBlock cancelblock;
 @property (nonatomic, assign) CGRect cropFrame;
 
 - (id)initWithImage:(UIImage *)originalImage cropFrame:(CGRect)cropFrame limitScaleRatio:(NSInteger)limitRatio;

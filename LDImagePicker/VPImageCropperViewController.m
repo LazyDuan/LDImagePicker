@@ -30,17 +30,10 @@
 
 @implementation VPImageCropperViewController
 
-- (void)dealloc {
-    self.originalImage = nil;
-    self.showImgView = nil;
-    self.editedImage = nil;
-    self.overlayView = nil;
-    self.ratioView = nil;
-}
+#pragma mark - LifeCycle
 
 - (id)initWithImage:(UIImage *)originalImage cropFrame:(CGRect)cropFrame limitScaleRatio:(NSInteger)limitRatio {
-    self = [super init];
-    if (self)
+    if (self = [super init])
 		{
         self.cropFrame = cropFrame;
         self.limitRatio = limitRatio;
@@ -49,39 +42,43 @@
     return self;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBarHidden = YES;
+    [[UIApplication sharedApplication] setStatusBarHidden:YES];
+}
+
+- (void)viewDidLoad{
     [super viewDidLoad];
-    [self initView];
+    [self initSubView];
     [self initControlBtn];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    self.navigationController.navigationBarHidden = YES;
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
+- (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     self.navigationController.navigationBarHidden = NO;
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
-{
+- (void)dealloc {
+    self.originalImage = nil;
+    self.showImgView = nil;
+    self.editedImage = nil;
+    self.overlayView = nil;
+    self.ratioView = nil;
+}
+
+#pragma mark - Private
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation{
     return NO;
 }
 
-- (void)initView
-{
+- (void)initSubView{
     self.showImgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 240)];
     [self.showImgView setMultipleTouchEnabled:YES];
     [self.showImgView setUserInteractionEnabled:YES];
     [self.showImgView setImage:self.originalImage];
-    [self.showImgView setUserInteractionEnabled:YES];
-    [self.showImgView setMultipleTouchEnabled:YES];
     
     // scale to fit the screen
     CGFloat oriWidth = self.cropFrame.size.width;
@@ -105,7 +102,7 @@
     [self.view addSubview:self.overlayView];
     
     self.ratioView = [[UIView alloc] initWithFrame:self.cropFrame];
-    self.ratioView.layer.borderColor = [UIColor yellowColor].CGColor;
+    self.ratioView.layer.borderColor = [UIColor whiteColor].CGColor;
     self.ratioView.layer.borderWidth = 1.0f;
     self.ratioView.autoresizingMask = UIViewAutoresizingNone;
     [self.view addSubview:self.ratioView];
@@ -115,42 +112,39 @@
 }
 
 - (void)initControlBtn {
-    UIButton *cancelBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 50.0f, 100, 50)];
-    cancelBtn.backgroundColor = [UIColor clearColor];
-    cancelBtn.titleLabel.textColor = [UIColor whiteColor];
-    [cancelBtn setTitle:@"取消" forState:UIControlStateNormal];
-    [cancelBtn.titleLabel setFont:[UIFont boldSystemFontOfSize:18.0f]];
-    [cancelBtn.titleLabel setTextAlignment:NSTextAlignmentCenter];
-    [cancelBtn.titleLabel setLineBreakMode:NSLineBreakByWordWrapping];
-    [cancelBtn.titleLabel setNumberOfLines:0];
-    [cancelBtn setTitleEdgeInsets:UIEdgeInsetsMake(5.0f, 5.0f, 5.0f, 5.0f)];
+    UIView *backView = [[UIToolbar alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 80.0f, self.view.frame.size.width, 80)];
+    backView.backgroundColor = [UIColor blackColor];
+    backView.alpha = 0.5;
+    UIButton *cancelBtn = [self buttonWithTitle:@"取消"];
+    cancelBtn.frame = CGRectMake(0, 15, 100, 50);
     [cancelBtn addTarget:self action:@selector(cancel:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:cancelBtn];
+    [backView addSubview:cancelBtn];
     
-    UIButton *confirmBtn = [[UIButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 100.0f, self.view.frame.size.height - 50.0f, 100, 50)];
-    confirmBtn.backgroundColor = [UIColor clearColor];
-    confirmBtn.titleLabel.textColor = [UIColor whiteColor];
-    [confirmBtn setTitle:@"确定" forState:UIControlStateNormal];
-    [confirmBtn.titleLabel setFont:[UIFont boldSystemFontOfSize:18.0f]];
-    [confirmBtn.titleLabel setTextAlignment:NSTextAlignmentCenter];
-    confirmBtn.titleLabel.textColor = [UIColor whiteColor];
-    [confirmBtn.titleLabel setLineBreakMode:NSLineBreakByWordWrapping];
-    [confirmBtn.titleLabel setNumberOfLines:0];
-    [confirmBtn setTitleEdgeInsets:UIEdgeInsetsMake(5.0f, 5.0f, 5.0f, 5.0f)];
+    UIButton *confirmBtn = [self buttonWithTitle:@"确定"];
+    confirmBtn.frame = CGRectMake(self.view.frame.size.width - 100.0f, 15, 100, 50);
     [confirmBtn addTarget:self action:@selector(confirm:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:confirmBtn];
+    [backView addSubview:confirmBtn];
+    [self.view addSubview:backView];
+}
+- (UIButton *)buttonWithTitle:(NSString *)title{
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.backgroundColor = [UIColor clearColor];
+    [button setTitle:title forState:UIControlStateNormal];
+    [button.titleLabel setFont:[UIFont boldSystemFontOfSize:18.0f]];
+    [button.titleLabel setTextAlignment:NSTextAlignmentCenter];
+    [button.titleLabel setLineBreakMode:NSLineBreakByWordWrapping];
+    [button.titleLabel setNumberOfLines:0];
+    [button setTitleEdgeInsets:UIEdgeInsetsMake(5.0f, 5.0f, 5.0f, 5.0f)];
+    return button;
+}
+#pragma mark - Action
+
+- (void)confirm:(id)sender {
+    self.submitblock(self, [self getSubImage]);
 }
 
 - (void)cancel:(id)sender {
-    if (self.delegate && [self.delegate conformsToProtocol:@protocol(VPImageCropperDelegate)]) {
-        [self.delegate imageCropperDidCancel:self];
-    }
-}
-
-- (void)confirm:(id)sender {
-    if (self.delegate && [self.delegate conformsToProtocol:@protocol(VPImageCropperDelegate)]) {
-        [self.delegate imageCropper:self didFinished:[self getSubImage]];
-    }
+    self.cancelblock(self);
 }
 
 - (void)overlayClipping
