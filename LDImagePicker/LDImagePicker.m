@@ -24,7 +24,6 @@
     static LDImagePicker *sharedInstance = nil;
     dispatch_once(&ETToken, ^{
         sharedInstance = [[LDImagePicker alloc] init];
-        
     });
     return sharedInstance;
 }
@@ -59,15 +58,13 @@
     
     UIImage * image = [info objectForKey:UIImagePickerControllerOriginalImage];
     UIImageOrientation imageOrientation=image.imageOrientation;
-    if(imageOrientation!=UIImageOrientationUp)
-    {
-        // 原始图片可以根据照相时的角度来显示，但UIImage无法判定，于是出现获取的图片会向左转９０度的现象。
-        // 以下为调整图片角度的部分
+    if(imageOrientation!=UIImageOrientationUp){
+        // Adjust picture Angle
         UIGraphicsBeginImageContext(image.size);
         [image drawInRect:CGRectMake(0, 0, image.size.width, image.size.height)];
         image = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
-        // 调整图片角度完毕
+        
     }
     if (isScale) {
         self.imageCropperController = [[VPImageCropperViewController alloc] initWithImage:image cropFrame:CGRectMake(0, (ScreenHeight-ScreenWidth*_scale)/2, ScreenWidth, ScreenWidth*_scale) limitScaleRatio:5];

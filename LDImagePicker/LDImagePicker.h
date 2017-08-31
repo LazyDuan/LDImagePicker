@@ -8,8 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-typedef NS_ENUM(NSInteger,ImagePickerType)
-{
+typedef NS_ENUM(NSInteger,ImagePickerType){
     ImagePickerCamera = 0,
     ImagePickerPhoto = 1
 };
@@ -21,10 +20,10 @@ typedef NS_ENUM(NSInteger,ImagePickerType)
 @end
 @interface LDImagePicker : NSObject
 + (instancetype) sharedInstance;
-//选择原图片
-- (void)showOriginalImagePickerWithType:(ImagePickerType)type InViewController:(UIViewController *)viewController;
-//scale 裁剪框的高宽比 0~1.5 默认为1
-- (void)showImagePickerWithType:(ImagePickerType)type InViewController:(UIViewController *)viewController Scale:(double)scale;
-//代理
+//delegate
 @property (nonatomic, assign) id<LDImagePickerDelegate> delegate;
+//choose original image
+- (void)showOriginalImagePickerWithType:(ImagePickerType)type InViewController:(UIViewController *)viewController;
+//Custom cut. Cutting box's scale(height/Width) 0~1.5 default is 1
+- (void)showImagePickerWithType:(ImagePickerType)type InViewController:(UIViewController *)viewController Scale:(double)scale;
 @end

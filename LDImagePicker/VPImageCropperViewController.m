@@ -109,29 +109,25 @@
     CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
     CGMutablePathRef path = CGPathCreateMutable();
     // Left side of the ratio view
-    CGPathAddRect(path, nil, CGRectMake(0, 0,
-                                        self.ratioView.frame.origin.x,
-                                        self.overlayView.frame.size.height));
+    CGPathAddRect(path, nil, CGRectMake(0, 0,self.cropFrame.origin.x,self.overlayView.frame.size.height));
     // Right side of the ratio view
-    CGPathAddRect(path, nil, CGRectMake(
-                                        self.ratioView.frame.origin.x + self.ratioView.frame.size.width,
+    CGPathAddRect(path, nil, CGRectMake(self.cropFrame.origin.x + self.ratioView.frame.size.width,
                                         0,
-                                        self.overlayView.frame.size.width - self.ratioView.frame.origin.x - self.ratioView.frame.size.width,
+                                        self.overlayView.frame.size.width - self.ratioView.frame.origin.x - self.cropFrame.size.width,
                                         self.overlayView.frame.size.height));
     // Top side of the ratio view
     CGPathAddRect(path, nil, CGRectMake(0, 0,
                                         self.overlayView.frame.size.width,
-                                        self.ratioView.frame.origin.y));
+                                        self.cropFrame.origin.y));
     // Bottom side of the ratio view
     CGPathAddRect(path, nil, CGRectMake(0,
-                                        self.ratioView.frame.origin.y + self.ratioView.frame.size.height,
+                                        self.cropFrame.origin.y + self.ratioView.frame.size.height,
                                         self.overlayView.frame.size.width,
-                                        self.overlayView.frame.size.height - self.ratioView.frame.origin.y + self.ratioView.frame.size.height));
+                                        self.overlayView.frame.size.height - self.ratioView.frame.origin.y + self.cropFrame.size.height));
     maskLayer.path = path;
     self.overlayView.layer.mask = maskLayer;
     CGPathRelease(path);
 }
-
 
 - (void)initControlBtn {
     UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 70.0f, self.view.frame.size.width, 70)];
@@ -223,6 +219,7 @@
         }];
     }
 }
+#pragma mark - Handle
 
 - (CGRect)handleScaleOverflow:(CGRect)newFrame {
     // bounce to original frame
