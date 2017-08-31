@@ -52,6 +52,7 @@
     [super viewDidLoad];
     [self initSubView];
     [self initControlBtn];
+    [self addGestureRecognizers];
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
@@ -70,10 +71,6 @@
 
 #pragma mark - Private
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation{
-    return NO;
-}
-
 - (void)initSubView{
     self.showImgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 240)];
     [self.showImgView setMultipleTouchEnabled:YES];
@@ -88,10 +85,8 @@
     self.oldFrame = CGRectMake(oriX, oriY, oriWidth, oriHeight);
     self.latestFrame = self.oldFrame;
     self.showImgView.frame = self.oldFrame;
-    
     self.largeFrame = CGRectMake(0, 0, self.limitRatio * self.oldFrame.size.width, self.limitRatio * self.oldFrame.size.height);
     
-    [self addGestureRecognizers];
     [self.view addSubview:self.showImgView];
     
     self.overlayView = [[UIView alloc] initWithFrame:self.view.bounds];
@@ -106,49 +101,11 @@
     self.ratioView.layer.borderWidth = 1.0f;
     self.ratioView.autoresizingMask = UIViewAutoresizingNone;
     [self.view addSubview:self.ratioView];
-    
     [self overlayClipping];
     [self.view setBackgroundColor:[UIColor blackColor]];
 }
 
-- (void)initControlBtn {
-    UIView *backView = [[UIToolbar alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 80.0f, self.view.frame.size.width, 80)];
-    backView.backgroundColor = [UIColor blackColor];
-    backView.alpha = 0.5;
-    UIButton *cancelBtn = [self buttonWithTitle:@"取消"];
-    cancelBtn.frame = CGRectMake(0, 15, 100, 50);
-    [cancelBtn addTarget:self action:@selector(cancel:) forControlEvents:UIControlEventTouchUpInside];
-    [backView addSubview:cancelBtn];
-    
-    UIButton *confirmBtn = [self buttonWithTitle:@"确定"];
-    confirmBtn.frame = CGRectMake(self.view.frame.size.width - 100.0f, 15, 100, 50);
-    [confirmBtn addTarget:self action:@selector(confirm:) forControlEvents:UIControlEventTouchUpInside];
-    [backView addSubview:confirmBtn];
-    [self.view addSubview:backView];
-}
-- (UIButton *)buttonWithTitle:(NSString *)title{
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    button.backgroundColor = [UIColor clearColor];
-    [button setTitle:title forState:UIControlStateNormal];
-    [button.titleLabel setFont:[UIFont boldSystemFontOfSize:18.0f]];
-    [button.titleLabel setTextAlignment:NSTextAlignmentCenter];
-    [button.titleLabel setLineBreakMode:NSLineBreakByWordWrapping];
-    [button.titleLabel setNumberOfLines:0];
-    [button setTitleEdgeInsets:UIEdgeInsetsMake(5.0f, 5.0f, 5.0f, 5.0f)];
-    return button;
-}
-#pragma mark - Action
-
-- (void)confirm:(id)sender {
-    self.submitblock(self, [self getSubImage]);
-}
-
-- (void)cancel:(id)sender {
-    self.cancelblock(self);
-}
-
-- (void)overlayClipping
-{
+- (void)overlayClipping{
     CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
     CGMutablePathRef path = CGPathCreateMutable();
     // Left side of the ratio view
@@ -175,9 +132,46 @@
     CGPathRelease(path);
 }
 
+
+- (void)initControlBtn {
+    UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 70.0f, self.view.frame.size.width, 70)];
+    backView.backgroundColor = [UIColor colorWithRed:40/255.f green:40/255.f blue:40/255.f alpha:0.8];
+    
+    UIButton *cancelBtn = [self buttonWithTitle:@"取消"];
+    cancelBtn.frame = CGRectMake(0, 10, 100, 50);
+    [cancelBtn addTarget:self action:@selector(cancel:) forControlEvents:UIControlEventTouchUpInside];
+    [backView addSubview:cancelBtn];
+    
+    UIButton *confirmBtn = [self buttonWithTitle:@"确定"];
+    confirmBtn.frame = CGRectMake(self.view.frame.size.width - 100.0f, 10, 100, 50);
+    [confirmBtn addTarget:self action:@selector(confirm:) forControlEvents:UIControlEventTouchUpInside];
+    [backView addSubview:confirmBtn];
+    [self.view addSubview:backView];
+}
+- (UIButton *)buttonWithTitle:(NSString *)title{
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.backgroundColor = [UIColor clearColor];
+    [button setTitle:title forState:UIControlStateNormal];
+    [button.titleLabel setFont:[UIFont boldSystemFontOfSize:18.0f]];
+    [button.titleLabel setTextAlignment:NSTextAlignmentCenter];
+    [button.titleLabel setLineBreakMode:NSLineBreakByWordWrapping];
+    [button.titleLabel setNumberOfLines:0];
+    [button setTitleEdgeInsets:UIEdgeInsetsMake(5.0f, 5.0f, 5.0f, 5.0f)];
+    return button;
+}
+#pragma mark - Action
+
+- (void)confirm:(id)sender {
+    self.submitblock(self, [self getSubImage]);
+}
+
+- (void)cancel:(id)sender {
+    self.cancelblock(self);
+}
+
+#pragma mark - Gestures
 // register all gestures
-- (void) addGestureRecognizers
-{
+- (void) addGestureRecognizers{
     // add pinch gesture
     UIPinchGestureRecognizer *pinchGestureRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinchView:)];
     [self.view addGestureRecognizer:pinchGestureRecognizer];
@@ -188,8 +182,7 @@
 }
 
 // pinch gesture handler
-- (void) pinchView:(UIPinchGestureRecognizer *)pinchGestureRecognizer
-{
+- (void) pinchView:(UIPinchGestureRecognizer *)pinchGestureRecognizer{
     UIView *view = self.showImgView;
     if (pinchGestureRecognizer.state == UIGestureRecognizerStateBegan || pinchGestureRecognizer.state == UIGestureRecognizerStateChanged) {
         view.transform = CGAffineTransformScale(view.transform, pinchGestureRecognizer.scale, pinchGestureRecognizer.scale);
@@ -207,8 +200,7 @@
 }
 
 // pan gesture handler
-- (void) panView:(UIPanGestureRecognizer *)panGestureRecognizer
-{
+- (void) panView:(UIPanGestureRecognizer *)panGestureRecognizer{
     UIView *view = self.showImgView;
     if (panGestureRecognizer.state == UIGestureRecognizerStateBegan || panGestureRecognizer.state == UIGestureRecognizerStateChanged) {
         // calculate accelerator
