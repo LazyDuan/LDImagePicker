@@ -10,7 +10,7 @@
 #import "VPImageCropperViewController.h"
 #define ScreenWidth  CGRectGetWidth([UIScreen mainScreen].bounds)
 #define ScreenHeight CGRectGetHeight([UIScreen mainScreen].bounds)
-@interface LDImagePicker()<UINavigationControllerDelegate, UIImagePickerControllerDelegate,VPImageCropperDelegate>{
+@interface LDImagePicker()<UINavigationControllerDelegate, UIImagePickerControllerDelegate>{
     BOOL isScale;
     double _scale;
 }
@@ -24,7 +24,6 @@
     static LDImagePicker *sharedInstance = nil;
     dispatch_once(&ETToken, ^{
         sharedInstance = [[LDImagePicker alloc] init];
-        
     });
     return sharedInstance;
 }
@@ -59,19 +58,31 @@
     
     UIImage * image = [info objectForKey:UIImagePickerControllerOriginalImage];
     UIImageOrientation imageOrientation=image.imageOrientation;
-    if(imageOrientation!=UIImageOrientationUp)
-    {
-        // 原始图片可以根据照相时的角度来显示，但UIImage无法判定，于是出现获取的图片会向左转９０度的现象。
-        // 以下为调整图片角度的部分
+    if(imageOrientation!=UIImageOrientationUp){
+        // Adjust picture Angle
         UIGraphicsBeginImageContext(image.size);
         [image drawInRect:CGRectMake(0, 0, image.size.width, image.size.height)];
         image = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
-        // 调整图片角度完毕
+        
     }
     if (isScale) {
         self.imageCropperController = [[VPImageCropperViewController alloc] initWithImage:image cropFrame:CGRectMake(0, (ScreenHeight-ScreenWidth*_scale)/2, ScreenWidth, ScreenWidth*_scale) limitScaleRatio:5];
-        self.imageCropperController.delegate = self;
+        __weak typeof(self) weakself = self;
+        [_imageCropperController setSubmitblock:^(UIViewController *viewController , UIImage *image) {
+            [viewController dismissViewControllerAnimated:YES completion:nil];
+            if (weakself.delegate) {
+                [weakself.delegate imagePicker:weakself didFinished:image];
+            }
+        }];
+        [_imageCropperController setCancelblock:^(UIViewController *viewController){
+            UIImagePickerController *picker = (UIImagePickerController *)viewController.navigationController;
+            if (picker.sourceType == UIImagePickerControllerSourceTypeCamera) {
+                [viewController.navigationController dismissViewControllerAnimated:YES completion:nil];
+            }else{
+                [viewController.navigationController popViewControllerAnimated:YES];
+            }
+        }];
         [picker pushViewController:self.imageCropperController animated:YES];
     }else{
         [picker dismissViewControllerAnimated:YES completion:^{}];
@@ -84,21 +95,6 @@
     [picker dismissViewControllerAnimated:YES completion:^{}];
     if (self.delegate) {
         [self.delegate imagePickerDidCancel:self];
-    }
-}
-#pragma mark - VPImageCropperDelegate
-- (void)imageCropperDidCancel:(VPImageCropperViewController *)cropperViewController{
-    UIImagePickerController *picker = (UIImagePickerController *)cropperViewController.navigationController;
-    if (picker.sourceType == UIImagePickerControllerSourceTypeCamera) {
-        [cropperViewController.navigationController dismissViewControllerAnimated:YES completion:nil];
-    }else{
-        [cropperViewController.navigationController popViewControllerAnimated:YES];
-    }
-}
-- (void)imageCropper:(VPImageCropperViewController *)cropperViewController didFinished:(UIImage *)editedImage{
-    [cropperViewController dismissViewControllerAnimated:YES completion:nil];
-    if (self.delegate) {
-        [self.delegate imagePicker:self didFinished:editedImage];
     }
 }
 #pragma mark - Getters
