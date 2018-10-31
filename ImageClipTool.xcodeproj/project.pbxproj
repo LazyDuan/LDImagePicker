@@ -143,7 +143,7 @@
 				TargetAttributes = {
 					D560C5DB1D2CEF7F00D334AF = {
 						CreatedOnToolsVersion = 7.1;
-						DevelopmentTeam = SG3ZTRZ4Y9;
+						DevelopmentTeam = GKZ3GCWRFP;
 					};
 				};
 			};
@@ -303,6 +303,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = GKZ3GCWRFP;
 				INFOPLIST_FILE = ImageClipTool/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -316,6 +317,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = GKZ3GCWRFP;
 				INFOPLIST_FILE = ImageClipTool/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

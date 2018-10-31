@@ -200,13 +200,13 @@
     UIView *view = self.showImgView;
     if (panGestureRecognizer.state == UIGestureRecognizerStateBegan || panGestureRecognizer.state == UIGestureRecognizerStateChanged) {
         // calculate accelerator
-        CGFloat absCenterX = self.cropFrame.origin.x + self.cropFrame.size.width / 2;
-        CGFloat absCenterY = self.cropFrame.origin.y + self.cropFrame.size.height / 2;
-        CGFloat scaleRatio = self.showImgView.frame.size.width / self.cropFrame.size.width;
-        CGFloat acceleratorX = 1 - ABS(absCenterX - view.center.x) / (scaleRatio * absCenterX);
-        CGFloat acceleratorY = 1 - ABS(absCenterY - view.center.y) / (scaleRatio * absCenterY);
+//        CGFloat absCenterX = self.cropFrame.origin.x + self.cropFrame.size.width / 2;
+//        CGFloat absCenterY = self.cropFrame.origin.y + self.cropFrame.size.height / 2;
+//        CGFloat scaleRatio = self.showImgView.frame.size.width / self.cropFrame.size.width;
+//        CGFloat acceleratorX = 1 - ABS(absCenterX - view.center.x) / (scaleRatio * absCenterX);
+//        CGFloat acceleratorY = 1 - ABS(absCenterY - view.center.y) / (scaleRatio * absCenterY);
         CGPoint translation = [panGestureRecognizer translationInView:view.superview];
-        [view setCenter:(CGPoint){view.center.x + translation.x * acceleratorX, view.center.y + translation.y * acceleratorY}];
+        [view setCenter:(CGPoint){view.center.x + translation.x, view.center.y + translation.y}];
         [panGestureRecognizer setTranslation:CGPointZero inView:view.superview];
     }
     else if (panGestureRecognizer.state == UIGestureRecognizerStateEnded) {
